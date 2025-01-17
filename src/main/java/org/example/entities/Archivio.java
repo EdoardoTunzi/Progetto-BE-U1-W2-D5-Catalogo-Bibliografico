@@ -1,12 +1,14 @@
 package org.example.entities;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.List;
 import java.util.Optional;
 
 public class Archivio {
     private List<ElementoCatalogo> catalogo;
 
-   public Archivio(List<ElementoCatalogo> catalogo) {
+    public Archivio(List<ElementoCatalogo> catalogo) {
         this.catalogo = catalogo;
     }
 
@@ -21,19 +23,23 @@ public class Archivio {
     //metodo per aggiungere elemento
     public void aggiungiElemento(ElementoCatalogo elemento) throws Exception {
         //se in catalogo trovi un qualunque match di un elemento che ha isbn uguale all'isbn dell'elemento inserito allora exception.
-        //altrimenti aggiungi elemento a catalogo in archivio
+        //altrimenti aggiungo elemento a catalogo in archivio
         if (catalogo.stream().anyMatch(elementoCatalogo -> elementoCatalogo.getIsbn().equals(elemento.getIsbn()))) {
             throw new Exception("Un elemento con lo stesso ISBN è gia presente in archivio");
-        } else {this.catalogo.add(elemento);}
+        } else {
+            this.catalogo.add(elemento);
+        }
 
     }
 
+
     //metodo di ricerca per isbn
-    public Optional<ElementoCatalogo> ricercaDaISBN (String isbn) {
-        //cerca in catalogo, filtra tra gli elementi un elemento che isbn uguale a isbn richiesto e ritorna il primo elemento trovato.
-        return catalogo.stream()
+    //cerca in catalogo, filtra tra gli elementi un elemento che isbn uguale a isbn richiesto e ritorna il primo elemento trovato.
+    public void ricercaDaISBN(String isbn) {
+        Optional<ElementoCatalogo> risultato = catalogo.stream()
                 .filter(ele -> ele.getIsbn().equals(isbn))
                 .findFirst();
+        System.out.println(risultato);
     }
 
     //metodo rimozione elemento da isbn
@@ -46,18 +52,20 @@ public class Archivio {
     }
 
     //metodo ricerca per anno pubblicazione
-    public List<ElementoCatalogo> ricercaPerAnno (int anno) {
+    public void ricercaPerAnno(int anno) {
         //creo stream di catalogo, filtro tra gli elementi l'elemento con anno pubblicazione uguale ad anno inserito, e raccolgo in List.
-        return catalogo.stream()
+        List<ElementoCatalogo> risultato = catalogo.stream()
                 .filter(ele -> ele.getAnnoPubblicazione() == anno)
                 .toList();
+        System.out.println(risultato);
     }
 
     //metodo ricerca per autore
-   public List<ElementoCatalogo> ricercaPerAutore (String nomeAutore) {
-       return catalogo.stream()
-               .filter(ele -> ele instanceof Libro && ((Libro) ele).getAutore().equals(nomeAutore))
-               .toList();
+    public void ricercaPerAutore(String nomeAutore) {
+        List<ElementoCatalogo> risultato = catalogo.stream()
+                .filter(ele -> ele instanceof Libro && ((Libro) ele).getAutore().equals(nomeAutore))
+                .toList();
+        System.out.println(risultato);
     }
 
     //aggiornamento di un elemento da isbn

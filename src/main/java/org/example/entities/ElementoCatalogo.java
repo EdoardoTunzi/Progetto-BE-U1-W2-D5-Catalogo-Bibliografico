@@ -13,6 +13,7 @@ public abstract class ElementoCatalogo {
         this.numeroPagine = numeroPagine;
     }
 
+
     @Override
     public String toString() {
         return "ElementoCatalogo{" +

@@ -54,10 +54,11 @@ public class Archivio {
     }
 
     //metodo ricerca per autore
-   /* public void ricercaPerAutore (String nomeAutore) {
+   public List<ElementoCatalogo> ricercaPerAutore (String nomeAutore) {
        return catalogo.stream()
-               .filter(ele -> ele instanceof Libro)
-    }*/
+               .filter(ele -> ele instanceof Libro && ((Libro) ele).getAutore().equals(nomeAutore))
+               .toList();
+    }
 
     //aggiornamento di un elemento da isbn
 

@@ -22,11 +22,65 @@ public class Main {
 
         //--------TEST--------
 
-        System.out.println(archivio);
+        /*System.out.println(archivio);
         System.out.println(archivio.ricercaDaISBN("isbn12"));
         System.out.println("elementi del 1984: " + archivio.ricercaPerAnno(1984));
         archivio.rimuoviElementoDaISBN("isbn2");
-        System.out.println(archivio);
+        System.out.println(archivio.ricercaPerAutore("Tolkien"));
+        System.out.println(archivio);*/
+
+        boolean condizioneDiUscita = false;
+
+        while (!condizioneDiUscita) {
+            System.out.println("Benvenuto! Che operazione vuoi eseguire? Digita il numero corrispondente.");
+            System.out.println("1- Aggiungi elemento a catalogo");
+            System.out.println("2- Cerca elemento per ISBN");
+            System.out.println("3- Cerca elemento per Anno di pubblicazione");
+            System.out.println("4- Cerca per Autore");
+            System.out.println("5- Rimuovi da ISBN");
+            System.out.println("6- Termina");
+            int selezione = scanner.nextInt();
+
+            switch (selezione) {
+                case 1:
+                    System.out.println("Inserisci l' ISBN:");
+                    String isbn = scanner.nextLine();
+                    System.out.println("Inserisci titolo:");
+                    String titolo = scanner.nextLine();
+                    System.out.println("Inserisci l'anno di pubblicazione");
+                    int annoPubbl = scanner.nextInt();
+                    System.out.println("Inserisci numero di pagine");
+                    int numPagine = scanner.nextInt();
+                    System.out.println("Inserisci il tipo: 1- Libro, 2- Rivista");
+                    int selez = scanner.nextInt();
+
+                    if (selez == 1) {
+                        System.out.println("Inserisci nome autore");
+                        String nomeAutore = scanner.nextLine();
+                        System.out.println("Inserisci il genere");
+                        String genere = scanner.nextLine();
+                        archivio.aggiungiElemento(new Libro(isbn,titolo,annoPubbl,numPagine,nomeAutore,genere));
+                    } else if (selez == 2) {
+                        System.out.println("Inserisci la periodicità tra le seguenti opzioni: GIORNALIERA, SETTIMANALE, MENSILE");
+
+
+                    } else {
+                        System.out.println("Tipo inserito non valido");
+                    }
+
+
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    condizioneDiUscita = true;
+                    break;
+                default:
+                    System.out.println("Errore! Inserisci un numero valido");
+
+            }
+        }
     }
 
 

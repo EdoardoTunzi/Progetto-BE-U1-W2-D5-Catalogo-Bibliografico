@@ -6,8 +6,16 @@ import java.util.Optional;
 public class Archivio {
     private List<ElementoCatalogo> catalogo;
 
-    public Archivio(List<ElementoCatalogo> catalogo) {
+   public Archivio(List<ElementoCatalogo> catalogo) {
         this.catalogo = catalogo;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Archivio{" +
+                "catalogo=" + catalogo +
+                '}';
     }
 
     //metodo per aggiungere elemento
@@ -46,6 +54,10 @@ public class Archivio {
     }
 
     //metodo ricerca per autore
+   /* public void ricercaPerAutore (String nomeAutore) {
+       return catalogo.stream()
+               .filter(ele -> ele instanceof Libro)
+    }*/
 
     //aggiornamento di un elemento da isbn
 

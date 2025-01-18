@@ -16,12 +16,10 @@ public abstract class ElementoCatalogo {
 
     @Override
     public String toString() {
-        return "ElementoCatalogo{" +
-                "isbn='" + isbn + '\'' +
-                ", titolo='" + titolo + '\'' +
-                ", annoPubblicazione=" + annoPubblicazione +
-                ", numeroPagine=" + numeroPagine +
-                '}';
+        return  "Isbn: '" + isbn + '\'' +
+                ", Titolo: '" + titolo + '\'' +
+                ", Anno di Pubblicazione: " + annoPubblicazione +
+                ", Numero di Pagine: " + numeroPagine;
     }
 
     public String getIsbn() {

@@ -1,5 +1,6 @@
 package org.example;
 
+import com.github.javafaker.Faker;
 import org.example.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,47 +11,42 @@ import java.util.List;
 import java.util.Scanner;
 
 
-
 public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    static List<ElementoCatalogo> catalogoIniziale = new ArrayList<>();
+
     static Scanner scanner = new Scanner(System.in);
+    static Faker faker = new Faker();
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    //-----------------------------
+    static List<ElementoCatalogo> catalogoIniziale = new ArrayList<>();
     static Archivio archivio = new Archivio(catalogoIniziale);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         inizializzaCatalogo();
-
-        //--------TEST--------
-        /*System.out.println(archivio);
-        System.out.println(archivio.ricercaDaISBN("isbn12"));
-        System.out.println("elementi del 1984: " + archivio.ricercaPerAnno(1984));
-        archivio.rimuoviElementoDaISBN("isbn2");
-        System.out.println(archivio.ricercaPerAutore("Tolkien"));
-        System.out.println(archivio);*/
-
         boolean condizioneDiUscita = true;
-        //while per mantenere a loop il programma
-        while (condizioneDiUscita) {
-            System.out.println("Che operazione vuoi eseguire? Digita il numero corrispondente.");
-            System.out.println("1- Aggiungi elemento a catalogo");
-            System.out.println("2- Cerca elemento per ISBN");
-            System.out.println("3- Cerca elemento per Anno di pubblicazione");
-            System.out.println("4- Cerca per Autore");
-            System.out.println("5- Rimuovi da ISBN");
-            System.out.println("6- Aggiorna elemento da ISBN");
-            System.out.println("7- Statistiche del catalogo");
-            System.out.println("8- Termina");
-            int selezione = Integer.parseInt(scanner.nextLine());
 
+        while (condizioneDiUscita) {
             try {
+                System.out.println("-------------------------------------------------");
+                System.out.println("Che operazione vuoi eseguire? Digita il numero corrispondente.");
+                System.out.println("1- Aggiungi elemento a catalogo");
+                System.out.println("2- Cerca elemento per ISBN");
+                System.out.println("3- Cerca elemento per Anno di pubblicazione");
+                System.out.println("4- Cerca per Autore");
+                System.out.println("5- Rimuovi da ISBN");
+                System.out.println("6- Aggiorna elemento da ISBN");
+                System.out.println("7- Statistiche del catalogo");
+                System.out.println("8- Vedi tutti gli elementi in catalogo");
+                System.out.println("9- Termina");
+                int selezione = Integer.parseInt(scanner.nextLine());
+
+
                 switch (selezione) {
                     case 1:
                         addElemento(archivio);
-                        System.out.println("Elemento aggiunto con successo!");
                         break;
                     case 2:
-                        System.out.println("Inserisci l'ISBN da cercare:");
+                        System.out.println("Inserisci ISBN da cercare:");
                         String isbn = scanner.nextLine();
                         archivio.ricercaDaISBN(isbn);
                         break;
@@ -65,12 +61,12 @@ public class Main {
                         archivio.ricercaPerAutore(autore);
                         break;
                     case 5:
-                        System.out.println("Inserisci l'ISBN dell'elemento da rimuovere");
+                        System.out.println("Inserisci ISBN dell'elemento da rimuovere");
                         String isbn2 = scanner.nextLine();
                         archivio.rimuoviElementoDaISBN(isbn2);
                         break;
                     case 6:
-                        System.out.println("Inserisci l'ISBN dell'elemento da aggiornare");
+                        System.out.println("Inserisci ISBN dell'elemento da aggiornare");
                         String isbn3 = scanner.nextLine();
                         aggiornaElemDaIsbn(isbn3);
                         break;
@@ -79,22 +75,27 @@ public class Main {
                         archivio.stampaStatistiche();
                         break;
                     case 8:
+                        archivio.stampaArchivioCompleto();
+                        break;
+                    case 9:
                         condizioneDiUscita = false;
-                        System.out.println("--------Applicazione terminata------");
+                        System.out.println("-------- Applicazione terminata --------");
                         break;
                     default:
                         logger.error("Errore! Inserisci un numero valido");
 
                 }
             } catch (ISBNNotFoundException e) {
-                logger.error("Errore ricerca ISBN" + e.getMessage());
+                logger.error("Errore ricerca ISBN: " + e.getMessage());
+            } catch (NumberFormatException e) {
+                logger.error("Errore: Inserisci un valore numerico tra quelli proposti! " + e.getMessage());
             } catch (Exception e) {
-                logger.error("Errore " + e.getMessage());
+                logger.error("Errore: " + e.getMessage());
             }
         }
     }
 
-    //metodo per gestire case1 - Aggiunta elemento
+    //metodo per implementazione case1 - Aggiunta elemento
     public static void addElemento(Archivio archivio) throws Exception {
         System.out.println("Inserisci l' ISBN:");
         String isbn = scanner.nextLine();
@@ -124,10 +125,13 @@ public class Main {
 
             if (input == 1) {
                 archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.SEMESTRALE));
+                System.out.println("Elemento aggiunto con successo!");
             } else if (input == 2) {
                 archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.SETTIMANALE));
+                System.out.println("Elemento aggiunto con successo!");
             } else if (input == 3) {
                 archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.MENSILE));
+                System.out.println("Elemento aggiunto con successo!");
             } else {
                 logger.error("Errore: Input non valido");
             }
@@ -246,14 +250,15 @@ public class Main {
         }
     }
 
+    //metodo per generare un catalogo iniziale
     public static void inizializzaCatalogo() {
-        ElementoCatalogo el1 = new Libro("isbn1", "The Alchemist", 1984, 150, "Paulo Coelho", "romanzo");
-        ElementoCatalogo el2 = new Libro("isbn12", "The Power of Now", 2001, 130, "Eckart Tolle", "spiritualità");
-        ElementoCatalogo el3 = new Libro("isbn123", "Lo Hobbit", 1974, 230, "Tolkien", "romanzo");
-        ElementoCatalogo el4 = new Libro("isbn124", "1984", 1984, 150, "Tolkien", "romanzo");
-        ElementoCatalogo el5 = new Rivista("isbn211", "Focus", 2025, 50, Periodicita.SETTIMANALE);
-        ElementoCatalogo el6 = new Rivista("isbn212", "The Economist", 2025, 30, Periodicita.MENSILE);
-        ElementoCatalogo el7 = new Rivista("isbn213", "Panorama", 2025, 20, Periodicita.SEMESTRALE);
+        ElementoCatalogo el1 = new Libro(faker.code().isbn10(true), faker.book().title(), faker.random().nextInt(1900, 2025), faker.random().nextInt(100, 500), faker.book().author(), faker.book().genre());
+        ElementoCatalogo el2 = new Libro(faker.code().isbn10(true), faker.book().title(), faker.random().nextInt(1900, 2024), faker.random().nextInt(100, 500), faker.book().author(), faker.book().genre());
+        ElementoCatalogo el3 = new Libro(faker.code().isbn10(true), faker.book().title(), faker.random().nextInt(1900, 2024), faker.random().nextInt(100, 500), faker.book().author(), faker.book().genre());
+        ElementoCatalogo el4 = new Libro(faker.code().isbn10(true), faker.book().title(), faker.random().nextInt(1900, 2024), faker.random().nextInt(100, 500), faker.book().author(), faker.book().genre());
+        ElementoCatalogo el5 = new Rivista(faker.code().isbn10(true), "Focus", faker.random().nextInt(1900, 2024), faker.random().nextInt(20, 200), Periodicita.SETTIMANALE);
+        ElementoCatalogo el6 = new Rivista(faker.code().isbn10(true), "The Economist", faker.random().nextInt(1900, 2024), faker.random().nextInt(20, 200), Periodicita.MENSILE);
+        ElementoCatalogo el7 = new Rivista(faker.code().isbn10(true), "Panorama", faker.random().nextInt(1900, 2024), faker.random().nextInt(20, 200), Periodicita.SEMESTRALE);
         catalogoIniziale.addAll(Arrays.asList(el1, el2, el3, el4, el5, el6, el7));
     }
 }

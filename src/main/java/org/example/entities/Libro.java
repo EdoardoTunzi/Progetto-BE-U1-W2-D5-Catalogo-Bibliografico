@@ -13,10 +13,10 @@ public class Libro extends ElementoCatalogo {
 
     @Override
     public String toString() {
-        return super.toString() + "Libro{" +
-                "autore='" + autore + '\'' +
-                ", genere='" + genere + '\'' +
-                '}';
+        return  "Libro= " +
+                "Autore:'" + autore + '\'' +
+                ", Genere:'" + genere + '\'' +
+                ", " + super.toString();
     }
 
     public String getAutore() {

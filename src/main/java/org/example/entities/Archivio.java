@@ -42,7 +42,7 @@ public class Archivio {
         ElementoCatalogo risultato = catalogo.stream()
                 .filter(ele -> ele.getIsbn().equals(isbn))
                 .findFirst()
-                .orElseThrow(()-> new ISBNNotFoundException(" - Isbn non trovato!"));
+                .orElseThrow(() -> new ISBNNotFoundException(" - Isbn non trovato!"));
         System.out.println(risultato);
     }
 
@@ -51,7 +51,7 @@ public class Archivio {
     public void rimuoviElementoDaISBN(String isbn) {
         //dopo una ricerca dei metodi delle List ho trovato il metodo removeIf, perchè remove() non riuscivo a collegarlo a una condizione
         //https://www.w3schools.com/java/ref_arraylist_removeif.asp
-       boolean rimosso = catalogo.removeIf(ele -> ele.getIsbn().equals(isbn));
+        boolean rimosso = catalogo.removeIf(ele -> ele.getIsbn().equals(isbn));
         System.out.println(rimosso ? "Elemento con ISBN: " + isbn + " RIMOSSO CON SUCCESSO!" : "Elemento con ISBN: " + isbn + " NON TROVATO!");
 
     }
@@ -70,11 +70,21 @@ public class Archivio {
         List<ElementoCatalogo> risultato = catalogo.stream()
                 .filter(ele -> ele instanceof Libro && ((Libro) ele).getAutore().equals(nomeAutore))
                 .toList();
-        System.out.println(risultato);
+
+        if (!risultato.isEmpty()) {
+            System.out.println(risultato);
+        } else {
+            System.out.println("Nessun autore trovato con il nome: " + nomeAutore);
+        }
+        ;
     }
 
     //metodo aggiornamento di un elemento da isbn creato in Main
 
+    //metodo stampa archivio
+    public void stampaArchivioCompleto() {
+        catalogo.forEach(System.out::println);
+    }
 
     //metodo stampa statistiche catalogo
     public void stampaStatistiche() {

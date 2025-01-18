@@ -18,8 +18,8 @@ public class Rivista extends ElementoCatalogo {
 
     @Override
     public String toString() {
-        return super.toString() + "Rivista{" +
-                "periodicita=" + periodicita +
-                '}';
+        return   "Rivista= " +
+                "con periodicità " + periodicita +
+                ", " + super.toString();
     }
 }

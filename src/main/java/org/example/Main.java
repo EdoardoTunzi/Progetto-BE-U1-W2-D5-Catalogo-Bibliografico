@@ -43,8 +43,8 @@ public class Main {
             try {
                 switch (selezione) {
                     case 1:
-                            addElemento(archivio);
-                            System.out.println("Elemento aggiunto con successo!");
+                        addElemento(archivio);
+                        System.out.println("Elemento aggiunto con successo!");
                         /*} catch (Exception e) {
                             System.out.println("Errore in aggiunta elemento" + e.getMessage());
                         }*/
@@ -70,6 +70,10 @@ public class Main {
                         archivio.rimuoviElementoDaISBN(isbn2);
                         break;
                     case 6:
+                        System.out.println("Inserisci l'ISBN dell'elemento da aggiornare");
+                        String isbn3 = scanner.nextLine();
+                        aggiornaElemDaIsbn(isbn3);
+                        break;
 
                     case 7:
                         archivio.stampaStatistiche();
@@ -82,15 +86,16 @@ public class Main {
                         System.out.println("Errore! Inserisci un numero valido");
 
                 }
-            } catch (ISBNNotFoundException e ) {
+            } catch (ISBNNotFoundException e) {
                 System.out.println("Errore ricerca ISBN" + e.getMessage());
             } catch (Exception e) {
                 System.out.println("Errore " + e.getMessage());
             }
         }
     }
+
     //metodo per gestire case1 - Aggiunta elemento
-    public static void addElemento (Archivio archivio) throws Exception {
+    public static void addElemento(Archivio archivio) throws Exception {
         System.out.println("Inserisci l' ISBN:");
         String isbn = scanner.nextLine();
         System.out.println("Inserisci titolo:");
@@ -117,29 +122,138 @@ public class Main {
 
             int input = Integer.parseInt(scanner.nextLine());
 
-                if (input == 1) {
-                    archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.SEMESTRALE));
-                } else if (input == 2) {
-                    archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.SETTIMANALE));
-                } else if (input == 3) {
-                    archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.MENSILE));
-                } else {
-                    System.out.println("Errore: Input non valido");
-                }
+            if (input == 1) {
+                archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.SEMESTRALE));
+            } else if (input == 2) {
+                archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.SETTIMANALE));
+            } else if (input == 3) {
+                archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.MENSILE));
+            } else {
+                System.out.println("Errore: Input non valido");
+            }
 
         } else {
             System.out.println("Tipo inserito non valido");
         }
     }
 
-    public static void inizializzaCatalogo() {
-        ElementoCatalogo el1 = new Libro("isbn1", "The Alchemist", 1984, 150, "Paulo Coelho", "romanzo");
-        ElementoCatalogo el2 = new Libro("isbn12", "The Power of Now", 2001, 130, "Eckart Tolle", "spiritualità");
-        ElementoCatalogo el3 = new Libro("isbn123", "Lo Hobbit", 1974, 230, "Tolkien", "romanzo");
-        ElementoCatalogo el4 = new Libro("isbn124", "1984", 1984, 150, "Tolkien", "romanzo");
-        ElementoCatalogo el5 = new Rivista("isbn211", "Focus", 2025, 50, Periodicita.SETTIMANALE);
-        ElementoCatalogo el6 = new Rivista("isbn212", "The Economist", 2025, 30, Periodicita.MENSILE);
-        ElementoCatalogo el7 = new Rivista("isbn213", "Panorama", 2025, 20, Periodicita.SEMESTRALE);
-        catalogoIniziale.addAll(Arrays.asList(el1, el2, el3, el4, el5, el6, el7));
+    public static void aggiornaElemDaIsbn(String isbn) throws ISBNNotFoundException {
+        ElementoCatalogo elementoDaModificare = archivio.catalogo.stream()
+                .filter(ele -> ele.getIsbn().equals(isbn))
+                .findFirst()
+                .orElseThrow(()-> new ISBNNotFoundException(" - Isbn non trovato"));
+
+        if (elementoDaModificare instanceof Libro) {
+            System.out.println("Cosa vuoi modificare di questo Libro?");
+            System.out.println("1- Isbn, 2- Titolo, 3- Anno di pubblicazione, 4- numero di pagine");
+            System.out.println("5- Nome Autore, 6- Genere");
+            int selezioneLibro = Integer.parseInt(scanner.nextLine());
+            switch (selezioneLibro) {
+                case 1:
+                    System.out.println("Inserisci il nuovo Isbn");
+                    String isbnAggiornato = scanner.nextLine();
+                    elementoDaModificare.setIsbn(isbnAggiornato);
+                    System.out.println("Isbn modificato!");
+                    break;
+                case 2:
+                    System.out.println("Inserisci nuovo titolo:");
+                    String nuovoTitolo = scanner.nextLine();
+                    elementoDaModificare.setTitolo(nuovoTitolo);
+                    System.out.println("Titolo modificato!");
+                    break;
+                case 3:
+                    System.out.println("Inserisci nuovo anno di pubblicazione:");
+                    int nuovoAnno = Integer.parseInt(scanner.nextLine());
+                    elementoDaModificare.setAnnoPubblicazione(nuovoAnno);
+                    System.out.println("Anno modificato!");
+                    break;
+                case 4:
+                    System.out.println("Inserisci il nuovo numero di pagine:");
+                    int nuovoNumPag = Integer.parseInt(scanner.nextLine());
+                    elementoDaModificare.setNumeroPagine(nuovoNumPag);
+                    System.out.println("Numero pagine modificato!");
+                    break;
+                case 5:
+                    System.out.println("Inserisci il nuovo nome dell'autore");
+                    String nuovoAutore = scanner.nextLine();
+                    ((Libro) elementoDaModificare).setAutore(nuovoAutore);
+                    System.out.println("Autore modificato!");
+                    break;
+                case 6:
+                    System.out.println("Inserisci il nuovo genere:");
+                    String nuovoGenere = scanner.nextLine();
+                    ((Libro) elementoDaModificare).setGenere(nuovoGenere);
+                    break;
+                default:
+                    System.out.println("Errore: Valore inserito non valido");
+                    break;
+
+            }
+        } else if (elementoDaModificare instanceof Rivista) {
+            System.out.println("Cosa vuoi modificare di questa Rivista?");
+            System.out.println("1- Isbn, 2- Titolo, 3- Anno di pubblicazione, 4- numero di pagine, 5- Periodicità");
+            int selezioneRivista = Integer.parseInt(scanner.nextLine());
+
+            switch (selezioneRivista) {
+                case 1:
+                    System.out.println("Inserisci il nuovo Isbn");
+                    String isbnAggiornato = scanner.nextLine();
+                    elementoDaModificare.setIsbn(isbnAggiornato);
+                    System.out.println("Isbn modificato!");
+                    break;
+                case 2:
+                    System.out.println("Inserisci nuovo titolo:");
+                    String nuovoTitolo = scanner.nextLine();
+                    elementoDaModificare.setTitolo(nuovoTitolo);
+                    System.out.println("Titolo modificato!");
+                    break;
+                case 3:
+                    System.out.println("Inserisci nuovo anno di pubblicazione:");
+                    int nuovoAnno = Integer.parseInt(scanner.nextLine());
+                    elementoDaModificare.setAnnoPubblicazione(nuovoAnno);
+                    System.out.println("Anno modificato!");
+                    break;
+                case 4:
+                    System.out.println("Inserisci il nuovo numero di pagine:");
+                    int nuovoNumPag = Integer.parseInt(scanner.nextLine());
+                    elementoDaModificare.setNumeroPagine(nuovoNumPag);
+                    System.out.println("Numero pagine modificato!");
+                    break;
+                case 5:
+                    System.out.println("Inserisci la nuova periodicità tra le seguenti:");
+                    System.out.println("1- SEMESTRALE, 2- SETTIMANALE, 3- MENSILE");
+                    int nuovaPeriod = Integer.parseInt(scanner.nextLine());
+
+
+                    if (nuovaPeriod == 1) {
+                        ((Rivista) elementoDaModificare).setPeriodicita(Periodicita.SEMESTRALE);
+                    } else if (nuovaPeriod == 2) {
+                        ((Rivista) elementoDaModificare).setPeriodicita(Periodicita.SETTIMANALE);
+                    } else if (nuovaPeriod == 3) {
+                        ((Rivista) elementoDaModificare).setPeriodicita(Periodicita.MENSILE);
+                    } else {
+                        System.out.println("Errore: Input non valido");
+                    }
+
+                    System.out.println("Periodicità modificata!");
+                    break;
+                default:
+                    System.out.println("Errore: Valore inserito non valido");
+                    break;
+
+            }
+        }
     }
-}
+
+        public static void inizializzaCatalogo () {
+            ElementoCatalogo el1 = new Libro("isbn1", "The Alchemist", 1984, 150, "Paulo Coelho", "romanzo");
+            ElementoCatalogo el2 = new Libro("isbn12", "The Power of Now", 2001, 130, "Eckart Tolle", "spiritualità");
+            ElementoCatalogo el3 = new Libro("isbn123", "Lo Hobbit", 1974, 230, "Tolkien", "romanzo");
+            ElementoCatalogo el4 = new Libro("isbn124", "1984", 1984, 150, "Tolkien", "romanzo");
+            ElementoCatalogo el5 = new Rivista("isbn211", "Focus", 2025, 50, Periodicita.SETTIMANALE);
+            ElementoCatalogo el6 = new Rivista("isbn212", "The Economist", 2025, 30, Periodicita.MENSILE);
+            ElementoCatalogo el7 = new Rivista("isbn213", "Panorama", 2025, 20, Periodicita.SEMESTRALE);
+            catalogoIniziale.addAll(Arrays.asList(el1, el2, el3, el4, el5, el6, el7));
+        }
+    }
+

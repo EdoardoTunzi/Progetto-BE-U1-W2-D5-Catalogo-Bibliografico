@@ -9,7 +9,7 @@ import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 public class Archivio {
-    private List<ElementoCatalogo> catalogo;
+    public List<ElementoCatalogo> catalogo;
 
     public Archivio(List<ElementoCatalogo> catalogo) {
         this.catalogo = catalogo;
@@ -42,7 +42,7 @@ public class Archivio {
         ElementoCatalogo risultato = catalogo.stream()
                 .filter(ele -> ele.getIsbn().equals(isbn))
                 .findFirst()
-                .get();
+                .orElseThrow(()-> new ISBNNotFoundException(" - Isbn non trovato!"));
         System.out.println(risultato);
     }
 
@@ -73,7 +73,8 @@ public class Archivio {
         System.out.println(risultato);
     }
 
-    //metodo aggiornamento di un elemento da isbn
+    //metodo aggiornamento di un elemento da isbn creato in Main
+
 
     //metodo stampa statistiche catalogo
     public void stampaStatistiche() {

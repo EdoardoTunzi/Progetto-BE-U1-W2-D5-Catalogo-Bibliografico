@@ -16,7 +16,7 @@ public abstract class ElementoCatalogo {
 
     @Override
     public String toString() {
-        return  "Isbn: '" + isbn + '\'' +
+        return "Isbn: '" + isbn + '\'' +
                 ", Titolo: '" + titolo + '\'' +
                 ", Anno di Pubblicazione: " + annoPubblicazione +
                 ", Numero di Pagine: " + numeroPagine;

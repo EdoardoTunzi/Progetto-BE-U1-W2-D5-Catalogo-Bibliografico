@@ -13,7 +13,7 @@ public class Libro extends ElementoCatalogo {
 
     @Override
     public String toString() {
-        return  "Libro= " +
+        return "Libro= " +
                 "Autore:'" + autore + '\'' +
                 ", Genere:'" + genere + '\'' +
                 ", " + super.toString();

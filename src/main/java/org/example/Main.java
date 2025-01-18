@@ -1,6 +1,8 @@
 package org.example;
 
 import org.example.entities.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,8 +10,9 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class Main {
 
+public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     static List<ElementoCatalogo> catalogoIniziale = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
     static Archivio archivio = new Archivio(catalogoIniziale);
@@ -45,9 +48,6 @@ public class Main {
                     case 1:
                         addElemento(archivio);
                         System.out.println("Elemento aggiunto con successo!");
-                        /*} catch (Exception e) {
-                            System.out.println("Errore in aggiunta elemento" + e.getMessage());
-                        }*/
                         break;
                     case 2:
                         System.out.println("Inserisci l'ISBN da cercare:");
@@ -83,13 +83,13 @@ public class Main {
                         System.out.println("--------Applicazione terminata------");
                         break;
                     default:
-                        System.out.println("Errore! Inserisci un numero valido");
+                        logger.error("Errore! Inserisci un numero valido");
 
                 }
             } catch (ISBNNotFoundException e) {
-                System.out.println("Errore ricerca ISBN" + e.getMessage());
+                logger.error("Errore ricerca ISBN" + e.getMessage());
             } catch (Exception e) {
-                System.out.println("Errore " + e.getMessage());
+                logger.error("Errore " + e.getMessage());
             }
         }
     }
@@ -129,11 +129,11 @@ public class Main {
             } else if (input == 3) {
                 archivio.aggiungiElemento(new Rivista(isbn, titolo, annoPubbl, numPagine, Periodicita.MENSILE));
             } else {
-                System.out.println("Errore: Input non valido");
+                logger.error("Errore: Input non valido");
             }
 
         } else {
-            System.out.println("Tipo inserito non valido");
+            logger.error("Tipo inserito non valido");
         }
     }
 
@@ -186,7 +186,7 @@ public class Main {
                     ((Libro) elementoDaModificare).setGenere(nuovoGenere);
                     break;
                 default:
-                    System.out.println("Errore: Valore inserito non valido");
+                    logger.error("Errore: Valore inserito non valido");
                     break;
 
             }
@@ -239,7 +239,7 @@ public class Main {
                     System.out.println("Periodicità modificata!");
                     break;
                 default:
-                    System.out.println("Errore: Valore inserito non valido");
+                    logger.error("Errore: Valore inserito non valido");
                     break;
 
             }

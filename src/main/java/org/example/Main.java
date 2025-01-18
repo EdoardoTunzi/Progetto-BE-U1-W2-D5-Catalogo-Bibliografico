@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Hello world!
- */
+
 public class Main {
 
     static List<ElementoCatalogo> catalogoIniziale = new ArrayList<>();
@@ -29,7 +27,7 @@ public class Main {
         System.out.println(archivio);*/
 
         boolean condizioneDiUscita = true;
-
+        //while per mantenere a loop il programma
         while (condizioneDiUscita) {
             System.out.println("Che operazione vuoi eseguire? Digita il numero corrispondente.");
             System.out.println("1- Aggiungi elemento a catalogo");
@@ -37,41 +35,57 @@ public class Main {
             System.out.println("3- Cerca elemento per Anno di pubblicazione");
             System.out.println("4- Cerca per Autore");
             System.out.println("5- Rimuovi da ISBN");
-            System.out.println("6- Termina");
+            System.out.println("6- Aggiorna elemento da ISBN");
+            System.out.println("7- Statistiche del catalogo");
+            System.out.println("8- Termina");
             int selezione = Integer.parseInt(scanner.nextLine());
 
-            switch (selezione) {
-                case 1:
-                    try {
-                        addElemento(archivio);
-                        System.out.println("Elemento aggiunto con successo!");
-                    } catch (Exception e) {
-                        System.out.println("Errore in aggiunta elemento" + e.getMessage());
-                    }
-                    break;
-                case 2:
-                    System.out.println("Inserisci l'ISBN da cercare:");
-                    String isbn = scanner.nextLine();
-                    archivio.ricercaDaISBN(isbn);
-                    break;
-                case 3:
-                    System.out.println("Inserisci l'anno da cercare:");
-                    int anno = Integer.parseInt(scanner.nextLine());
-                    archivio.ricercaPerAnno(anno);
-                    break;
-                case 4:
-                    System.out.println("Inserisci il nome dell'autore da cercare:");
-                    String autore = scanner.nextLine();
-                    archivio.ricercaPerAutore(autore);
-                    break;
-                case 5:
-                case 6:
-                    condizioneDiUscita = false;
-                    System.out.println("--------Applicazione terminata------");
-                    break;
-                default:
-                    System.out.println("Errore! Inserisci un numero valido");
+            try {
+                switch (selezione) {
+                    case 1:
+                            addElemento(archivio);
+                            System.out.println("Elemento aggiunto con successo!");
+                        /*} catch (Exception e) {
+                            System.out.println("Errore in aggiunta elemento" + e.getMessage());
+                        }*/
+                        break;
+                    case 2:
+                        System.out.println("Inserisci l'ISBN da cercare:");
+                        String isbn = scanner.nextLine();
+                        archivio.ricercaDaISBN(isbn);
+                        break;
+                    case 3:
+                        System.out.println("Inserisci l'anno da cercare:");
+                        int anno = Integer.parseInt(scanner.nextLine());
+                        archivio.ricercaPerAnno(anno);
+                        break;
+                    case 4:
+                        System.out.println("Inserisci il nome dell'autore da cercare:");
+                        String autore = scanner.nextLine();
+                        archivio.ricercaPerAutore(autore);
+                        break;
+                    case 5:
+                        System.out.println("Inserisci l'ISBN dell'elemento da rimuovere");
+                        String isbn2 = scanner.nextLine();
+                        archivio.rimuoviElementoDaISBN(isbn2);
+                        break;
+                    case 6:
 
+                    case 7:
+                        archivio.stampaStatistiche();
+                        break;
+                    case 8:
+                        condizioneDiUscita = false;
+                        System.out.println("--------Applicazione terminata------");
+                        break;
+                    default:
+                        System.out.println("Errore! Inserisci un numero valido");
+
+                }
+            } catch (ISBNNotFoundException e ) {
+                System.out.println("Errore ricerca ISBN" + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Errore " + e.getMessage());
             }
         }
     }
@@ -99,7 +113,7 @@ public class Main {
         } else if (selez == 2) {
 
             System.out.println("Inserisci la periodicità tra le seguenti opzioni: ");
-            System.out.println("1-SEMESTRALE, 2- SETTIMANALE, 3- MENSILE");
+            System.out.println("1- SEMESTRALE, 2- SETTIMANALE, 3- MENSILE");
 
             int input = Integer.parseInt(scanner.nextLine());
 

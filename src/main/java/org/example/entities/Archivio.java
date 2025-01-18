@@ -2,8 +2,11 @@ package org.example.entities;
 
 import org.w3c.dom.ls.LSOutput;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 public class Archivio {
     private List<ElementoCatalogo> catalogo;
@@ -35,19 +38,21 @@ public class Archivio {
 
     //metodo di ricerca per isbn
     //cerca in catalogo, filtra tra gli elementi un elemento che isbn uguale a isbn richiesto e ritorna il primo elemento trovato.
-    public void ricercaDaISBN(String isbn) {
-        Optional<ElementoCatalogo> risultato = catalogo.stream()
+    public void ricercaDaISBN(String isbn) throws ISBNNotFoundException {
+        ElementoCatalogo risultato = catalogo.stream()
                 .filter(ele -> ele.getIsbn().equals(isbn))
-                .findFirst();
+                .findFirst()
+                .get();
         System.out.println(risultato);
     }
 
     //metodo rimozione elemento da isbn
 
-    public boolean rimuoviElementoDaISBN(String isbn) {
+    public void rimuoviElementoDaISBN(String isbn) {
         //dopo una ricerca dei metodi delle List ho trovato il metodo removeIf, perchè remove() non riuscivo a collegarlo a una condizione
         //https://www.w3schools.com/java/ref_arraylist_removeif.asp
-        return catalogo.removeIf(ele -> ele.getIsbn().equals(isbn));
+       boolean rimosso = catalogo.removeIf(ele -> ele.getIsbn().equals(isbn));
+        System.out.println(rimosso ? "Elemento con ISBN: " + isbn + " RIMOSSO CON SUCCESSO!" : "Elemento con ISBN: " + isbn + " NON TROVATO!");
 
     }
 
@@ -68,7 +73,26 @@ public class Archivio {
         System.out.println(risultato);
     }
 
-    //aggiornamento di un elemento da isbn
+    //metodo aggiornamento di un elemento da isbn
 
-    //statistiche catalogo
+    //metodo stampa statistiche catalogo
+    public void stampaStatistiche() {
+        //totali
+        long totaleLibri = catalogo.stream().filter(ele -> ele instanceof Libro).count();
+        long totaleRiviste = catalogo.stream().filter(ele -> ele instanceof Rivista).count();
+        System.out.println("Il catalogo contiene un totale di:");
+        System.out.println("Libri: " + totaleLibri);
+        System.out.println("Riviste: " + totaleRiviste);
+        //elemento più pagine
+        ElementoCatalogo elementoConPiuPagine = catalogo.stream()
+                .max(Comparator.comparing(ElementoCatalogo::getNumeroPagine)).get();
+        System.out.println("Elemento con più pagine: " + elementoConPiuPagine);
+        //media pagine di tutti gli elementi in catalogo
+        OptionalDouble mediaPagineTot = catalogo.stream()
+                .mapToDouble(ElementoCatalogo::getNumeroPagine)
+                .average();
+        System.out.println("La media delle pagine di tutti gli elementi in catalogo è: " + mediaPagineTot);
+
+
+    }
 }

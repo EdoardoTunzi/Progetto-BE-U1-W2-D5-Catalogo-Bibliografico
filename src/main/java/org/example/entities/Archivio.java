@@ -1,7 +1,5 @@
 package org.example.entities;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +12,6 @@ public class Archivio {
     public Archivio(List<ElementoCatalogo> catalogo) {
         this.catalogo = catalogo;
     }
-
 
     @Override
     public String toString() {
@@ -32,9 +29,7 @@ public class Archivio {
         } else {
             this.catalogo.add(elemento);
         }
-
     }
-
 
     //metodo di ricerca per isbn
     //cerca in catalogo, filtra tra gli elementi un elemento che isbn uguale a isbn richiesto e ritorna il primo elemento trovato.
@@ -47,13 +42,11 @@ public class Archivio {
     }
 
     //metodo rimozione elemento da isbn
-
     public void rimuoviElementoDaISBN(String isbn) {
         //dopo una ricerca dei metodi delle List ho trovato il metodo removeIf, perchè remove() non riuscivo a collegarlo a una condizione
         //https://www.w3schools.com/java/ref_arraylist_removeif.asp
         boolean rimosso = catalogo.removeIf(ele -> ele.getIsbn().equals(isbn));
         System.out.println(rimosso ? "Elemento con ISBN: " + isbn + " RIMOSSO CON SUCCESSO!" : "Elemento con ISBN: " + isbn + " NON TROVATO!");
-
     }
 
     //metodo ricerca per anno pubblicazione
@@ -62,7 +55,12 @@ public class Archivio {
         List<ElementoCatalogo> risultato = catalogo.stream()
                 .filter(ele -> ele.getAnnoPubblicazione() == anno)
                 .toList();
-        System.out.println(risultato);
+
+        if (!risultato.isEmpty()) {
+            System.out.println(risultato);
+        } else {
+            System.out.println("Nessun elemento trovato con l'anno: " + anno);
+        }
     }
 
     //metodo ricerca per autore
@@ -76,7 +74,6 @@ public class Archivio {
         } else {
             System.out.println("Nessun autore trovato con il nome: " + nomeAutore);
         }
-        ;
     }
 
     //metodo aggiornamento di un elemento da isbn creato in Main
@@ -103,7 +100,6 @@ public class Archivio {
                 .mapToDouble(ElementoCatalogo::getNumeroPagine)
                 .average();
         System.out.println("La media delle pagine di tutti gli elementi in catalogo è: " + mediaPagineTot);
-
 
     }
 }

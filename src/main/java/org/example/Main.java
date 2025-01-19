@@ -26,6 +26,7 @@ public class Main {
         boolean condizioneDiUscita = true;
 
         while (condizioneDiUscita) {
+
             try {
                 System.out.println("-------------------------------------------------");
                 System.out.println("Che operazione vuoi eseguire? Digita il numero corrispondente.");
@@ -39,7 +40,6 @@ public class Main {
                 System.out.println("8- Vedi tutti gli elementi in catalogo");
                 System.out.println("9- Termina");
                 int selezione = Integer.parseInt(scanner.nextLine());
-
 
                 switch (selezione) {
                     case 1:
@@ -70,7 +70,6 @@ public class Main {
                         String isbn3 = scanner.nextLine();
                         aggiornaElemDaIsbn(isbn3);
                         break;
-
                     case 7:
                         archivio.stampaStatistiche();
                         break;
@@ -83,7 +82,7 @@ public class Main {
                         break;
                     default:
                         logger.error("Errore! Inserisci un numero valido");
-
+                        break;
                 }
             } catch (ISBNNotFoundException e) {
                 logger.error("Errore ricerca ISBN: " + e.getMessage());
